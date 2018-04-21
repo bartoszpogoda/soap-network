@@ -1,18 +1,18 @@
 package com.github.bpogoda.academic.soap.network.model.node;
 
-public class NodeName {
+public class NodeIdentifier {
 	private String nodeName;
 
 	private String networkName;
 
-	public NodeName(String combinedName) {
+	public NodeIdentifier(String combinedName) {
 		String[] splittedName = combinedName.split("-");
 
 		networkName = splittedName[0];
 		nodeName = splittedName[1];
 	}
 
-	public NodeName(String networkName, String nodeName) {
+	public NodeIdentifier(String networkName, String nodeName) {
 		this.networkName = networkName;
 		this.nodeName = nodeName;
 	}
@@ -32,7 +32,15 @@ public class NodeName {
 	public void setNetworkName(String networkName) {
 		this.networkName = networkName;
 	}
+	
+	public boolean isNetworkBroadcast() {
+		return this.nodeName.equals("*") && !this.networkName.equals("*");
+	}
 
+	public boolean isGlobalBroadcast() {
+		return this.nodeName.equals("*") && this.networkName.equals("*");
+	}
+	
 	public String getCombinedName() {
 		return networkName + "-" + nodeName;
 	}

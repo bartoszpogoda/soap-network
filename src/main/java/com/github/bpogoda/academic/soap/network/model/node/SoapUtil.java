@@ -26,7 +26,7 @@ public class SoapUtil {
 	
 	public static final String HEADER_PATH_NODE = "PathNode";
 	
-	public static SOAPMessage createEnvelope(NodeName sender, NodeName receiver, String message) throws DOMException, SOAPException {
+	public static SOAPMessage createEnvelope(NodeIdentifier sender, NodeIdentifier receiver, String message) throws DOMException, SOAPException {
 		MessageFactory messageFactory = MessageFactory.newInstance();
 		
 		SOAPMessage soapMessage = messageFactory.createMessage();
@@ -42,29 +42,30 @@ public class SoapUtil {
 		return soapMessage;
 	}
 	
-	public static NodeName extractSender(SOAPMessage soapMessage) throws SOAPException {
-		return new NodeName(((SOAPElement)soapMessage.getSOAPHeader().getChildElements(new QName(HEADER_NAMESPACE_URI, HEADER_SENDER)).next()).getTextContent());
+	public static NodeIdentifier extractSender(SOAPMessage soapMessage) throws SOAPException {
+		return new NodeIdentifier(((SOAPElement)soapMessage.getSOAPHeader().getChildElements(new QName(HEADER_NAMESPACE_URI, HEADER_SENDER)).next()).getTextContent());
 	}
 	
-	public static NodeName extractReceiver(SOAPMessage soapMessage) throws SOAPException {
-		return new NodeName(((SOAPElement)soapMessage.getSOAPHeader().getChildElements(new QName(HEADER_NAMESPACE_URI, HEADER_RECEIVER)).next()).getTextContent());
+	public static NodeIdentifier extractReceiver(SOAPMessage soapMessage) throws SOAPException {
+		return new NodeIdentifier(((SOAPElement)soapMessage.getSOAPHeader().getChildElements(new QName(HEADER_NAMESPACE_URI, HEADER_RECEIVER)).next()).getTextContent());
 	}
 	
-	public static List<NodeName> extractPathNodes(SOAPMessage soapMessage) throws SOAPException {
-		List<NodeName> pathNodes = new ArrayList<>();
+	@SuppressWarnings("unchecked")
+	public static List<NodeIdentifier> extractPathNodes(SOAPMessage soapMessage) throws SOAPException {
+		List<NodeIdentifier> pathNodes = new ArrayList<>();
 		
 		SOAPElement pathNodesElement = (SOAPElement) soapMessage.getSOAPHeader().getChildElements(new QName(HEADER_NAMESPACE_URI, HEADER_PATH_NODES)).next();
 		
 		Iterator<SOAPElement> pathNodeElements = pathNodesElement.getChildElements(new QName(HEADER_NAMESPACE_URI, HEADER_PATH_NODE));
 		
 		while(pathNodeElements.hasNext()) {
-			pathNodes.add(new NodeName(pathNodeElements.next().getTextContent()));
+			pathNodes.add(new NodeIdentifier(pathNodeElements.next().getTextContent()));
 		}
 		
 		return pathNodes;
 	}
 	
-	public static SOAPMessage addPathNode(SOAPMessage soapMessage, NodeName pathNode) throws SOAPException {
+	public static SOAPMessage addPathNode(SOAPMessage soapMessage, NodeIdentifier pathNode) throws SOAPException {
 		SOAPElement pathNodesElement = (SOAPElement) soapMessage.getSOAPHeader().getChildElements(new QName(HEADER_NAMESPACE_URI, HEADER_PATH_NODES)).next();
 		
 		pathNodesElement.addChildElement(new QName(HEADER_NAMESPACE_URI, HEADER_PATH_NODE)).setTextContent(pathNode.getCombinedName());

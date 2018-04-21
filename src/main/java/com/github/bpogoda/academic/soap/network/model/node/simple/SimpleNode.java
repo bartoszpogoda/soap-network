@@ -1,78 +1,57 @@
 package com.github.bpogoda.academic.soap.network.model.node.simple;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.List;
 
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
-import com.github.bpogoda.academic.soap.network.model.node.NodeName;
+import com.github.bpogoda.academic.soap.network.model.node.AbstractNode;
+import com.github.bpogoda.academic.soap.network.model.node.NodeIdentifier;
 import com.github.bpogoda.academic.soap.network.model.node.SoapUtil;
 import com.github.bpogoda.academic.soap.network.node.simple.SimpleNodeController;
 
-public class SimpleNode {
-
-	private int nodePort;
-
-	private NodeName nodeName;
-
-	private int nextNodePort;
-
-	private ServerSocket serverSocket;
+public class SimpleNode extends AbstractNode {
 	
 	private SimpleNodeController controller;
+	
+	private int nextNodePort;
 
-	public SimpleNode(int nodePort, String nodeName, int nextNodePort) {
-		this.nodePort = nodePort;
-		this.nodeName = new NodeName(nodeName);
+	public SimpleNode(int port, NodeIdentifier name, int nextNodePort) {
+		super(port, name);
+		
 		this.nextNodePort = nextNodePort;
 	}
 
-	public void startServer() {
-		final ExecutorService clientProcessingPool = Executors.newFixedThreadPool(10);
-
-		int nodePort = this.nodePort;
-
-		Thread serverThread = new Thread(() -> {
-			try {
-				serverSocket = new ServerSocket(nodePort);
-				System.out.println("Waiting for clients to connect...");
-				while (true) {
-					Socket clientSocket = serverSocket.accept();
-					clientProcessingPool.submit(new IncommingMessageHandler(clientSocket, controller));
-				}
-			} catch (IOException e) {
-				
-			}
-		});
-
-		serverThread.start();
-	}
-	
-	public void stopServer() throws IOException {
-		serverSocket.close();
+	@Override
+	protected void onSoapMessageReceived(SOAPMessage soapMessage) {
+		try {
+			NodeIdentifier sender = SoapUtil.extractSender(soapMessage);
+			String message = SoapUtil.extractMessage(soapMessage);
+			
+			List<NodeIdentifier> pathNodes = SoapUtil.extractPathNodes(soapMessage);
+			
+			System.out.println("Path: ");
+			pathNodes.forEach(nodeName -> System.out.println(nodeName.getCombinedName()));
+			
+			controller.showReceivedMessage(sender.getCombinedName(), message);
+		} catch (SOAPException e) {
+			controller.showError("Error", e.getMessage());
+		}
 	}
 
-	public void sendMessage(String receiver, String message) throws SOAPException, UnknownHostException, IOException {
-		SOAPMessage soapMessage = SoapUtil.createEnvelope(nodeName, new NodeName(receiver), message);
-		
-		Socket socket = new Socket("localhost", nextNodePort);
-		soapMessage.writeTo(socket.getOutputStream());
-		socket.getOutputStream().flush();
+	@Override
+	protected void onSoapMessageReadyToSend(SOAPMessage soapMessage) {
+		try {
+			Socket socket = new Socket("localhost", nextNodePort);
+			soapMessage.writeTo(socket.getOutputStream());
+			socket.getOutputStream().flush();
+			socket.close();
+		} catch (IOException | SOAPException e) {
+			controller.showError("Error", e.getMessage());
+		}
 
-		socket.close();
-	}
-
-	public int getNodePort() {
-		return nodePort;
-	}
-
-	public NodeName getNodeName() {
-		return nodeName;
 	}
 
 	public int getNextNodePort() {
@@ -82,5 +61,5 @@ public class SimpleNode {
 	public void setController(SimpleNodeController controller) {
 		this.controller = controller;
 	}
-
+	
 }

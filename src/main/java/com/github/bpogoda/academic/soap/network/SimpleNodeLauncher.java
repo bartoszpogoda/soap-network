@@ -3,15 +3,16 @@ package com.github.bpogoda.academic.soap.network;
 import java.io.IOException;
 import java.util.Map;
 
+import com.github.bpogoda.academic.soap.network.model.node.NodeIdentifier;
 import com.github.bpogoda.academic.soap.network.model.node.simple.SimpleNode;
 import com.github.bpogoda.academic.soap.network.node.simple.SimpleNodeController;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 public class SimpleNodeLauncher extends Application {
 
@@ -37,24 +38,24 @@ public class SimpleNodeLauncher extends Application {
 
 			Map<String, String> parameters = getParameters().getNamed();
 			int nodePort = Integer.parseInt(parameters.get("nodePort"));
-			String nodeName = parameters.get("nodeName");
+			String nodeId = parameters.get("nodeId");
 			int nextNodePort = Integer.parseInt(parameters.get("nextNodePort"));
 
-			SimpleNode simpleNode = new SimpleNode(nodePort, nodeName, nextNodePort);
+			SimpleNode simpleNode = new SimpleNode(nodePort, new NodeIdentifier(nodeId), nextNodePort);
 			simpleNodeController.setSimpleNode(simpleNode);
 
 			simpleNode.setController(simpleNodeController);
 
 			primaryStage.setOnCloseRequest(event -> {
 				try {
-					simpleNode.stopServer();
+					simpleNode.stopListening();
 					stop();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			});
 
-			simpleNode.startServer();
+			simpleNode.startListening();
 
 			Scene scene = new Scene(simpleNodeView);
 			scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());
