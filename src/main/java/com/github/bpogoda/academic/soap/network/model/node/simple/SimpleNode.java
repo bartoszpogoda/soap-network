@@ -13,30 +13,49 @@ import com.github.bpogoda.academic.soap.network.model.node.SoapUtil;
 import com.github.bpogoda.academic.soap.network.node.simple.SimpleNodeController;
 
 public class SimpleNode extends AbstractNode {
-	
+
 	private SimpleNodeController controller;
-	
+
 	private int nextNodePort;
 
 	public SimpleNode(int port, NodeIdentifier name, int nextNodePort) {
 		super(port, name);
-		
+
 		this.nextNodePort = nextNodePort;
 	}
 
 	@Override
 	protected void onSoapMessageReceived(SOAPMessage soapMessage) {
 		try {
-			NodeIdentifier sender = SoapUtil.extractSender(soapMessage);
-			String message = SoapUtil.extractMessage(soapMessage);
-			
-			List<NodeIdentifier> pathNodes = SoapUtil.extractPathNodes(soapMessage);
-			
-			System.out.println("Path: ");
-			pathNodes.forEach(nodeName -> System.out.println(nodeName.getCombinedName()));
-			
-			controller.showReceivedMessage(sender.getCombinedName(), message);
-		} catch (SOAPException e) {
+			NodeIdentifier receiver = SoapUtil.extractReceiver(soapMessage);
+
+			if (receiver.isReceiver(this.getNodeId())) {
+				String sender = SoapUtil.extractSender(soapMessage).getCombinedName();
+				String message = SoapUtil.extractMessage(soapMessage);
+				controller.showReceivedMessage(sender, message);
+
+				if (receiver.isGlobalBroadcast() || receiver.isNetworkBroadcast()) {
+
+					List<NodeIdentifier> pathNodes = SoapUtil.extractPathNodes(soapMessage);
+
+					if (!pathNodes.contains(this.getNodeId())) {
+						SoapUtil.addPathNode(soapMessage, this.getNodeId());
+
+						sendMessage(soapMessage);
+					}
+				}
+			} else {
+				
+				List<NodeIdentifier> pathNodes = SoapUtil.extractPathNodes(soapMessage);
+
+				if (!pathNodes.contains(this.getNodeId())) {
+					SoapUtil.addPathNode(soapMessage, this.getNodeId());
+
+					sendMessage(soapMessage);
+				}
+			}
+
+		} catch (SOAPException | IOException e) {
 			controller.showError("Error", e.getMessage());
 		}
 	}
@@ -61,5 +80,5 @@ public class SimpleNode extends AbstractNode {
 	public void setController(SimpleNodeController controller) {
 		this.controller = controller;
 	}
-	
+
 }

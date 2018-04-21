@@ -26,12 +26,6 @@ public class SimpleNodeController implements Initializable {
 	private SimpleNode simpleNode;
 
 	@FXML
-	Label lblNextNode;
-
-	@FXML
-	Label lblCurrentNode;
-
-	@FXML
 	TextArea tbReceivedMessage;
 
 	@FXML
@@ -41,11 +35,18 @@ public class SimpleNodeController implements Initializable {
 
 	@FXML TextField tfTargetNode;
 
+	@FXML Label lblNextNodePort;
+
+	@FXML Label lblCurrentNodePort;
+
+	@FXML Label lblCurrentNodeId;
+
 	public void setSimpleNode(SimpleNode simpleNode) {
 		this.simpleNode = simpleNode;
 
-		lblCurrentNode.setText(Integer.toString(simpleNode.getPort()));
-		lblNextNode.setText(Integer.toString(simpleNode.getNextNodePort()));
+		lblCurrentNodeId.setText(simpleNode.getNodeId().getCombinedName());
+		lblCurrentNodePort.setText(Integer.toString(simpleNode.getPort()));
+		lblNextNodePort.setText(Integer.toString(simpleNode.getNextNodePort()));
 	}
 
 	@Override

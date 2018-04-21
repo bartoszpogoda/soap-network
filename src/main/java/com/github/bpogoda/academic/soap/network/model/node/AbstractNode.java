@@ -65,6 +65,10 @@ public abstract class AbstractNode {
 		onSoapMessageReadyToSend(soapMessage);
 	}
 	
+	public void sendMessage(SOAPMessage soapMessage) throws SOAPException, UnknownHostException, IOException {
+		onSoapMessageReadyToSend(soapMessage);
+	}
+	
 	abstract protected void onSoapMessageReceived(SOAPMessage soapMessage);
 	
 	abstract protected void onSoapMessageReadyToSend(SOAPMessage soapMessage);
@@ -73,7 +77,7 @@ public abstract class AbstractNode {
 		return port;
 	}
 
-	public NodeIdentifier getName() {
+	public NodeIdentifier getNodeId() {
 		return nodeId;
 	}
 	

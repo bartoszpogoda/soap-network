@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class SimpleNodeLauncher extends Application {
 
-	private static final String APP_TITLE = "Simple node";
+	private static final String APP_TITLE_PREFIX = "Simple node: ";
 	private static final String ICON_PATH = "icon.jpeg";
 	private static final String CSS_PATH = "application.css";
 
@@ -26,7 +26,6 @@ public class SimpleNodeLauncher extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle(APP_TITLE);
 		this.primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(ICON_PATH)));
 
 		try {
@@ -40,6 +39,7 @@ public class SimpleNodeLauncher extends Application {
 			int nodePort = Integer.parseInt(parameters.get("nodePort"));
 			String nodeId = parameters.get("nodeId");
 			int nextNodePort = Integer.parseInt(parameters.get("nextNodePort"));
+			this.primaryStage.setTitle(APP_TITLE_PREFIX + nodeId);
 
 			SimpleNode simpleNode = new SimpleNode(nodePort, new NodeIdentifier(nodeId), nextNodePort);
 			simpleNodeController.setSimpleNode(simpleNode);
