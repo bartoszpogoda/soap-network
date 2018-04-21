@@ -29,23 +29,15 @@ public class SimpleNode extends AbstractNode {
 		try {
 			NodeIdentifier receiver = SoapUtil.extractReceiver(soapMessage);
 
+			// determine if message is addressed to current node
 			if (receiver.isReceiver(this.getNodeId())) {
 				String sender = SoapUtil.extractSender(soapMessage).getCombinedName();
 				String message = SoapUtil.extractMessage(soapMessage);
 				controller.showReceivedMessage(sender, message);
-
-				if (receiver.isGlobalBroadcast() || receiver.isNetworkBroadcast()) {
-
-					List<NodeIdentifier> pathNodes = SoapUtil.extractPathNodes(soapMessage);
-
-					if (!pathNodes.contains(this.getNodeId())) {
-						SoapUtil.addPathNode(soapMessage, this.getNodeId());
-
-						sendMessage(soapMessage);
-					}
-				}
-			} else {
-				
+			} 
+			
+			// determine if message should be forwarded
+			if (receiver.isGlobalBroadcast() || receiver.isNetworkBroadcast() || !receiver.isReceiver(this.getNodeId())) {
 				List<NodeIdentifier> pathNodes = SoapUtil.extractPathNodes(soapMessage);
 
 				if (!pathNodes.contains(this.getNodeId())) {
