@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class SimpleNodeLauncher extends Application {
 
 	private static final String APP_TITLE_PREFIX = "Simple node: ";
-	private static final String ICON_PATH = "icon.jpeg";
+	private static final String ICON_PATH = "icon.png";
 	private static final String CSS_PATH = "application.css";
 
 	private Stage primaryStage;
