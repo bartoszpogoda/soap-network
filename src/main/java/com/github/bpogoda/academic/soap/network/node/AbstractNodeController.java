@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javax.swing.text.ChangedCharSetException;
 import javax.xml.soap.SOAPException;
 
 import com.github.bpogoda.academic.soap.network.model.node.AbstractNode;
@@ -31,7 +30,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
+import javafx.util.Duration;;
 
 public class AbstractNodeController implements Initializable {
 
