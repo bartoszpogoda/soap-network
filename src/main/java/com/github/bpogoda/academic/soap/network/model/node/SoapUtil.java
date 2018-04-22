@@ -35,8 +35,6 @@ public class SoapUtil {
 		soapMessage.getSOAPHeader().addChildElement(new QName(HEADER_NAMESPACE_URI, HEADER_RECEIVER)).setTextContent(receiver.getCombinedName());
 		soapMessage.getSOAPHeader().addChildElement(new QName(HEADER_NAMESPACE_URI, HEADER_PATH_NODES));
 		
-		addPathNode(soapMessage, sender);
-		
 		soapMessage.getSOAPBody().addBodyElement(new QName(BODY_MESSAGE)).setTextContent(message);
 
 		return soapMessage;

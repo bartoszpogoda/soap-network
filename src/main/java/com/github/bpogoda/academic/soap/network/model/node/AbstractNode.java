@@ -33,7 +33,6 @@ public abstract class AbstractNode {
 		Thread serverThread = new Thread(() -> {
 			try {
 				serverSocket = new ServerSocket(nodePort);
-				System.out.println("Waiting for clients to connect...");
 				while (true) {
 					Socket clientSocket = serverSocket.accept();
 					clientProcessingPool.submit(() -> {

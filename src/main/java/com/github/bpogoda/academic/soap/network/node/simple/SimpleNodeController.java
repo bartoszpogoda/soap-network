@@ -9,11 +9,14 @@ import javax.xml.soap.SOAPException;
 import com.github.bpogoda.academic.soap.network.model.node.simple.SimpleNode;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -41,6 +44,10 @@ public class SimpleNodeController implements Initializable {
 
 	@FXML Label lblCurrentNodeId;
 
+	@FXML ListView<String> listViewLog;
+	
+	private ObservableList<String> logs = FXCollections.observableArrayList();
+	
 	public void setSimpleNode(SimpleNode simpleNode) {
 		this.simpleNode = simpleNode;
 
@@ -51,7 +58,7 @@ public class SimpleNodeController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		listViewLog.setItems(logs);
 	}
 
 	@FXML
@@ -79,6 +86,14 @@ public class SimpleNodeController implements Initializable {
 		alert.setHeaderText(text);
 
 		alert.show();
+	}
+	
+	public void log(String message) {
+		Platform.runLater(() -> {
+			String timestampMs = Long.toString(System.currentTimeMillis());
+			String lastSixDigits = timestampMs.substring(timestampMs.length() - 6);
+			this.logs.add(lastSixDigits + ": " + message);
+		});
 	}
 
 }

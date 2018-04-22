@@ -6,6 +6,7 @@ import java.util.List;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
+import com.github.bpogoda.academic.soap.network.LogsUtil;
 import com.github.bpogoda.academic.soap.network.model.node.AbstractNode;
 import com.github.bpogoda.academic.soap.network.model.node.NodeIdentifier;
 import com.github.bpogoda.academic.soap.network.model.node.SoapUtil;
@@ -27,11 +28,20 @@ public class RouterNode extends AbstractNode {
 
 	@Override
 	protected void onSoapMessageReceived(SOAPMessage soapMessage) {
+		controller.log(LogsUtil.LOG_RECEIVE);
+		
 		try {
 			NodeIdentifier receiver = SoapUtil.extractReceiver(soapMessage);
-
+			
+			// determine if message was already handled
+			if(SoapUtil.extractPathNodes(soapMessage).contains(this.getNodeId())) {
+				controller.log(LogsUtil.LOG_DROP);
+				return;
+			}
+			
 			// determine if message is addressed to current node
 			if (receiver.isReceiver(this.getNodeId())) {
+				controller.log(LogsUtil.LOG_TO_ME);
 				String sender = SoapUtil.extractSender(soapMessage).getCombinedName();
 				String message = SoapUtil.extractMessage(soapMessage);
 				controller.showReceivedMessage(sender, message);
@@ -46,7 +56,11 @@ public class RouterNode extends AbstractNode {
 					SoapUtil.addPathNode(soapMessage, this.getNodeId());
 
 					sendMessage(soapMessage);
+				} else {
+					controller.log(LogsUtil.LOG_DROP);
 				}
+			} else {
+				controller.log(LogsUtil.LOG_DROP);
 			}
 
 		} catch (SOAPException | IOException e) {
@@ -60,11 +74,15 @@ public class RouterNode extends AbstractNode {
 			NodeIdentifier receiver = SoapUtil.extractReceiver(soapMessage);
 
 			if (receiver.isNetworkBroadcast() && receiver.getNetworkName().equals(getNodeId().getNetworkName())) {
+				controller.log(LogsUtil.LOG_FORWARD_NETWORK);
 				forwardToPort(soapMessage, nextNetworkNodePort);
 			} else if (receiver.isNetworkBroadcast()) {
+				controller.log(LogsUtil.LOG_FORWARD_ROUTER);
 				forwardToPort(soapMessage, nextRouterNodePort);
 			} else {
+				controller.log(LogsUtil.LOG_FORWARD_NETWORK);
 				forwardToPort(soapMessage, nextNetworkNodePort);
+				controller.log(LogsUtil.LOG_FORWARD_ROUTER);
 				forwardToPort(soapMessage, nextRouterNodePort);
 			}
 
