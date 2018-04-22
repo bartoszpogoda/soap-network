@@ -1,11 +1,10 @@
-package com.github.bpogoda.academic.soap.network;
+package com.github.bpogoda.academic.soap.network.node.router;
 
 import java.io.IOException;
 import java.util.Map;
 
 import com.github.bpogoda.academic.soap.network.model.node.NodeIdentifier;
-import com.github.bpogoda.academic.soap.network.model.node.simple.SimpleNode;
-import com.github.bpogoda.academic.soap.network.node.simple.SimpleNodeController;
+import com.github.bpogoda.academic.soap.network.model.node.router.RouterNode;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +13,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class SimpleNodeLauncher extends Application {
+public class RouterNodeLauncher extends Application {
 
-	private static final String APP_TITLE_PREFIX = "Simple node: ";
+	private static final String APP_TITLE_PREFIX = "Router node: ";
 	private static final String ICON_PATH = "icon.jpeg";
 	private static final String CSS_PATH = "application.css";
 
@@ -30,32 +29,35 @@ public class SimpleNodeLauncher extends Application {
 
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(SimpleNodeLauncher.class.getResource("node/simple/SimpleNodeView.fxml"));
+			loader.setLocation(RouterNodeLauncher.class.getResource("RouterNodeView.fxml"));
 			simpleNodeView = (BorderPane) loader.load();
 
-			SimpleNodeController simpleNodeController = (SimpleNodeController) loader.getController();
+			RouterNodeController routerNodeController = (RouterNodeController) loader.getController();
 
 			Map<String, String> parameters = getParameters().getNamed();
+			
 			int nodePort = Integer.parseInt(parameters.get("nodePort"));
 			String nodeId = parameters.get("nodeId");
-			int nextNodePort = Integer.parseInt(parameters.get("nextNodePort"));
+			int nextNetworkNodePort = Integer.parseInt(parameters.get("nextNetworkNodePort"));
+			int nextRouterNodePort = Integer.parseInt(parameters.get("nextRouterNodePort"));
+			
 			this.primaryStage.setTitle(APP_TITLE_PREFIX + nodeId);
 
-			SimpleNode simpleNode = new SimpleNode(nodePort, new NodeIdentifier(nodeId), nextNodePort);
-			simpleNodeController.setSimpleNode(simpleNode);
+			RouterNode routerNode = new RouterNode(nodePort, new NodeIdentifier(nodeId), nextNetworkNodePort, nextRouterNodePort);
+			routerNodeController.setRouterNode(routerNode);
 
-			simpleNode.setController(simpleNodeController);
+			routerNode.setController(routerNodeController);
 
 			primaryStage.setOnCloseRequest(event -> {
 				try {
-					simpleNode.stopListening();
+					routerNode.stopListening();
 					stop();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			});
 
-			simpleNode.startListening();
+			routerNode.startListening();
 
 			Scene scene = new Scene(simpleNodeView);
 			scene.getStylesheets().add(getClass().getResource(CSS_PATH).toExternalForm());

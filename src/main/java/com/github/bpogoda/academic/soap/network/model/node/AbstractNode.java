@@ -69,6 +69,13 @@ public abstract class AbstractNode {
 		onSoapMessageReadyToSend(soapMessage);
 	}
 	
+	protected void forwardToPort(SOAPMessage soapMessage, int port) throws SOAPException, IOException {
+		Socket socket = new Socket("localhost", port);
+		soapMessage.writeTo(socket.getOutputStream());
+		socket.getOutputStream().flush();
+		socket.close();
+	}
+	
 	abstract protected void onSoapMessageReceived(SOAPMessage soapMessage);
 	
 	abstract protected void onSoapMessageReadyToSend(SOAPMessage soapMessage);

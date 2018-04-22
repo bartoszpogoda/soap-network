@@ -1,4 +1,4 @@
-package com.github.bpogoda.academic.soap.network.model.node.simple;
+package com.github.bpogoda.academic.soap.network.model.node.router;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,18 +9,20 @@ import javax.xml.soap.SOAPMessage;
 import com.github.bpogoda.academic.soap.network.model.node.AbstractNode;
 import com.github.bpogoda.academic.soap.network.model.node.NodeIdentifier;
 import com.github.bpogoda.academic.soap.network.model.node.SoapUtil;
-import com.github.bpogoda.academic.soap.network.node.simple.SimpleNodeController;
+import com.github.bpogoda.academic.soap.network.node.router.RouterNodeController;
 
-public class SimpleNode extends AbstractNode {
+public class RouterNode extends AbstractNode {
 
-	private SimpleNodeController controller;
+	private int nextNetworkNodePort;
+	private int nextRouterNodePort;
 
-	private int nextNodePort;
+	private RouterNodeController controller;
 
-	public SimpleNode(int port, NodeIdentifier name, int nextNodePort) {
+	public RouterNode(int port, NodeIdentifier name, int nextNetworkNodePort, int nextRouterNodePort) {
 		super(port, name);
 
-		this.nextNodePort = nextNodePort;
+		this.nextNetworkNodePort = nextNetworkNodePort;
+		this.nextRouterNodePort = nextRouterNodePort;
 	}
 
 	@Override
@@ -33,10 +35,11 @@ public class SimpleNode extends AbstractNode {
 				String sender = SoapUtil.extractSender(soapMessage).getCombinedName();
 				String message = SoapUtil.extractMessage(soapMessage);
 				controller.showReceivedMessage(sender, message);
-			} 
-			
+			}
+
 			// determine if message should be forwarded
-			if (receiver.isGlobalBroadcast() || receiver.isNetworkBroadcast() || !receiver.isReceiver(this.getNodeId())) {
+			if (receiver.isGlobalBroadcast() || receiver.isNetworkBroadcast()
+					|| !receiver.isReceiver(this.getNodeId())) {
 				List<NodeIdentifier> pathNodes = SoapUtil.extractPathNodes(soapMessage);
 
 				if (!pathNodes.contains(this.getNodeId())) {
@@ -54,19 +57,32 @@ public class SimpleNode extends AbstractNode {
 	@Override
 	protected void onSoapMessageReadyToSend(SOAPMessage soapMessage) {
 		try {
-			forwardToPort(soapMessage, nextNodePort);
+			NodeIdentifier receiver = SoapUtil.extractReceiver(soapMessage);
+
+			if (receiver.isNetworkBroadcast() && receiver.getNetworkName().equals(getNodeId().getNetworkName())) {
+				forwardToPort(soapMessage, nextNetworkNodePort);
+			} else if (receiver.isNetworkBroadcast()) {
+				forwardToPort(soapMessage, nextRouterNodePort);
+			} else {
+				forwardToPort(soapMessage, nextNetworkNodePort);
+				forwardToPort(soapMessage, nextRouterNodePort);
+			}
+
 		} catch (IOException | SOAPException e) {
 			controller.showError("Error", e.getMessage());
 		}
-
 	}
 
-	public int getNextNodePort() {
-		return nextNodePort;
+	public void setController(RouterNodeController routerNodeController) {
+		this.controller = routerNodeController;
 	}
 
-	public void setController(SimpleNodeController controller) {
-		this.controller = controller;
+	public int getNextNetworkNodePort() {
+		return nextNetworkNodePort;
+	}
+
+	public int getNextRouterNodePort() {
+		return nextRouterNodePort;
 	}
 
 }
