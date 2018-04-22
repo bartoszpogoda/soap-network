@@ -28,7 +28,6 @@
    <bottom>
       <AnchorPane prefHeight="84.0" prefWidth="414.0" style="-fx-border-color: black;" BorderPane.alignment="CENTER">
          <children>
-            <TextArea fx:id="tbReceivedMessage" editable="false" layoutX="123.0" layoutY="15.0" prefHeight="56.0" prefWidth="277.0" promptText="Last message.." />
             <Label fx:id="lblMessageSender" alignment="CENTER" layoutX="28.0" layoutY="36.0" prefHeight="29.0" prefWidth="77.0" style="-fx-background-color: #fba51c; -fx-background-radius: 5;" textFill="WHITE">
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -38,6 +37,11 @@
                </font>
             </Label>
             <Text layoutX="48.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From:" />
+            <BorderPane fx:id="paneReceivedMessage" layoutX="120.0" layoutY="16.0" prefHeight="53.0" prefWidth="281.0" style="-fx-background-color: #E5DCC9; -fx-background-radius: 15;">
+               <center>
+                  <Text fx:id="txtReceivedMessage" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="253.6708984375" BorderPane.alignment="CENTER" />
+               </center>
+            </BorderPane>
          </children>
       </AnchorPane>
    </bottom>
