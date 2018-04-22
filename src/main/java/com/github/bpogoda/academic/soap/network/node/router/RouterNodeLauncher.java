@@ -35,15 +35,23 @@ public class RouterNodeLauncher extends Application {
 			RouterNodeController routerNodeController = (RouterNodeController) loader.getController();
 
 			Map<String, String> parameters = getParameters().getNamed();
-			
+
 			int nodePort = Integer.parseInt(parameters.get("nodePort"));
 			String nodeId = parameters.get("nodeId");
 			int nextNetworkNodePort = Integer.parseInt(parameters.get("nextNetworkNodePort"));
 			int nextRouterNodePort = Integer.parseInt(parameters.get("nextRouterNodePort"));
 			
+			String nextNetworkNodeHost = parameters.containsKey("nextNetworkNodeHost")
+					? parameters.get("nextNetworkNodeHost")
+					: "localhost";
+			String nextRouterNodeHost = parameters.containsKey("nextRouterNodeHost")
+					? parameters.get("nextRouterNodeHost")
+					: "localhost";
+
 			this.primaryStage.setTitle(APP_TITLE_PREFIX + nodeId);
 
-			RouterNode routerNode = new RouterNode(nodePort, new NodeIdentifier(nodeId), nextNetworkNodePort, nextRouterNodePort);
+			RouterNode routerNode = new RouterNode(nodePort, new NodeIdentifier(nodeId), nextNetworkNodeHost,
+					nextNetworkNodePort, nextRouterNodeHost, nextRouterNodePort);
 			routerNodeController.setRouterNode(routerNode);
 
 			routerNode.setController(routerNodeController);

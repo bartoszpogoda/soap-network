@@ -16,8 +16,8 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <TextArea fx:id="tbMessage" layoutX="18.0" layoutY="51.0" prefHeight="137.0" prefWidth="265.0" promptText="Enter message...." AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="51.0" />
-            <Button fx:id="btnSendMessage" layoutX="18.0" layoutY="198.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="31.0" prefWidth="264.0" text="Send" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" />
             <TextField fx:id="tfTargetNode" layoutX="110.0" layoutY="14.0" prefHeight="31.0" prefWidth="172.0" promptText="Receiver" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="14.0" />
+            <Button fx:id="btnSendMessage" layoutX="18.0" layoutY="198.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="31.0" prefWidth="264.0" text="Send" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" />
             <Text layoutX="18.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Target node" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="19.0" />
          </children>
       </AnchorPane>
@@ -48,7 +48,7 @@
    <top>
       <AnchorPane prefHeight="56.0" prefWidth="324.0" style="-fx-background-color: #D9E9E9;" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblNextNodePort" alignment="CENTER" layoutX="323.0" layoutY="15.0" prefHeight="29.0" prefWidth="77.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 5;" textFill="WHITE">
+            <Label fx:id="lblNextNodePort" alignment="CENTER" layoutX="339.0" layoutY="15.0" prefHeight="29.0" prefWidth="61.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 5;" textFill="WHITE">
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
@@ -56,8 +56,8 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Text layoutX="221.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="forwarding to" wrappingWidth="108.24951171875" />
-            <Label fx:id="lblCurrentNodePort" alignment="CENTER" layoutX="130.0" layoutY="14.0" prefHeight="29.0" prefWidth="77.0" style="-fx-background-color: #7ba51c; -fx-background-radius: 5;" textFill="WHITE">
+            <Text layoutX="152.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="forwarding to" wrappingWidth="91.24951171875" />
+            <Label fx:id="lblCurrentNodePort" alignment="CENTER" layoutX="68.0" layoutY="14.0" prefHeight="29.0" prefWidth="77.0" style="-fx-background-color: #7ba51c; -fx-background-radius: 5;" textFill="WHITE">
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
@@ -65,7 +65,15 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="lblCurrentNodeId" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="29.0" prefWidth="128.0" style="-fx-background-color: #5da31c; -fx-background-radius: 5;" textFill="WHITE">
+            <Label fx:id="lblCurrentNodeId" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="29.0" prefWidth="64.0" style="-fx-background-color: #5da31c; -fx-background-radius: 5;" textFill="WHITE">
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblNextNodeHost" alignment="CENTER" layoutX="251.0" layoutY="15.0" prefHeight="29.0" prefWidth="98.0" style="-fx-background-color: #5aa85c; -fx-background-radius: 5;" textFill="WHITE">
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>

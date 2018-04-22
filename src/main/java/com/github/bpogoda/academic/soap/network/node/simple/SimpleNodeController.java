@@ -10,11 +10,14 @@ public class SimpleNodeController extends AbstractNodeController {
 
 	@FXML
 	Label lblNextNodePort;
+	@FXML
+	Label lblNextNodeHost;
 
 	public void setSimpleNode(SimpleNode simpleNode) {
 		this.setNode(simpleNode);
 
 		lblNextNodePort.setText(Integer.toString(simpleNode.getNextNodePort()));
+		lblNextNodeHost.setText(simpleNode.getNetNodeHost());
 	}
 
 }

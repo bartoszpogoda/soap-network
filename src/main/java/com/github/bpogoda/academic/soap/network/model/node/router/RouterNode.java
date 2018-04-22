@@ -18,11 +18,15 @@ public class RouterNode extends AbstractNode {
 	private int nextRouterNodePort;
 
 	private RouterNodeController controller;
+	private String nextNetworkNodeHost;
+	private String nextRouterNodeHost;
 
-	public RouterNode(int port, NodeIdentifier name, int nextNetworkNodePort, int nextRouterNodePort) {
+	public RouterNode(int port, NodeIdentifier name, String nextNetworkNodeHost, int nextNetworkNodePort, String nextRouterNodeHost, int nextRouterNodePort) {
 		super(port, name);
-
+		this.nextNetworkNodeHost = nextNetworkNodeHost;
 		this.nextNetworkNodePort = nextNetworkNodePort;
+		
+		this.nextRouterNodeHost = nextRouterNodeHost;
 		this.nextRouterNodePort = nextRouterNodePort;
 	}
 
@@ -75,21 +79,21 @@ public class RouterNode extends AbstractNode {
 
 			if (receiver.isNetworkBroadcast() && receiver.getNetworkName().equals(getNodeId().getNetworkName())) {
 				controller.log(LogsUtil.LOG_FORWARD_NETWORK);
-				forwardToPort(soapMessage, nextNetworkNodePort);
+				forwardTo(soapMessage, nextNetworkNodeHost, nextNetworkNodePort);
 			} else if (receiver.isNetworkBroadcast()) {
 				controller.log(LogsUtil.LOG_FORWARD_ROUTER);
-				forwardToPort(soapMessage, nextRouterNodePort);
+				forwardTo(soapMessage, nextRouterNodeHost, nextRouterNodePort);
 			} else if (receiver.isUnicast() && receiver.getNetworkName().equals(getNodeId().getNetworkName())) {
 				controller.log(LogsUtil.LOG_FORWARD_NETWORK);
-				forwardToPort(soapMessage, nextNetworkNodePort);
+				forwardTo(soapMessage, nextNetworkNodeHost, nextNetworkNodePort);
 			} else if (receiver.isUnicast() && !receiver.getNetworkName().equals(getNodeId().getNetworkName())) {
 				controller.log(LogsUtil.LOG_FORWARD_ROUTER);
-				forwardToPort(soapMessage, nextRouterNodePort);
+				forwardTo(soapMessage, nextRouterNodeHost, nextRouterNodePort);
 			} else {
 				controller.log(LogsUtil.LOG_FORWARD_NETWORK);
-				forwardToPort(soapMessage, nextNetworkNodePort);
+				forwardTo(soapMessage, nextNetworkNodeHost, nextNetworkNodePort);
 				controller.log(LogsUtil.LOG_FORWARD_ROUTER);
-				forwardToPort(soapMessage, nextRouterNodePort);
+				forwardTo(soapMessage, nextRouterNodeHost, nextRouterNodePort);
 			}
 
 		} catch (IOException | SOAPException e) {
@@ -107,6 +111,14 @@ public class RouterNode extends AbstractNode {
 
 	public int getNextRouterNodePort() {
 		return nextRouterNodePort;
+	}
+	
+	public String getNextNetworkNodeHost() {
+		return nextNetworkNodeHost;
+	}
+	
+	public String getNextRouterNodeHost() {
+		return nextRouterNodeHost;
 	}
 
 }

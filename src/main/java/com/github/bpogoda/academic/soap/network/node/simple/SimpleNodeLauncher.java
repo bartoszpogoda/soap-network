@@ -37,10 +37,15 @@ public class SimpleNodeLauncher extends Application {
 			Map<String, String> parameters = getParameters().getNamed();
 			int nodePort = Integer.parseInt(parameters.get("nodePort"));
 			String nodeId = parameters.get("nodeId");
+			
+			String nextNodeHost = parameters.containsKey("nextNodeHost")
+					? parameters.get("nextNodeHost")
+					: "localhost";
+			
 			int nextNodePort = Integer.parseInt(parameters.get("nextNodePort"));
 			this.primaryStage.setTitle(APP_TITLE_PREFIX + nodeId);
 
-			SimpleNode simpleNode = new SimpleNode(nodePort, new NodeIdentifier(nodeId), nextNodePort);
+			SimpleNode simpleNode = new SimpleNode(nodePort, new NodeIdentifier(nodeId), nextNodeHost, nextNodePort);
 			simpleNodeController.setSimpleNode(simpleNode);
 
 			simpleNode.setController(simpleNodeController);

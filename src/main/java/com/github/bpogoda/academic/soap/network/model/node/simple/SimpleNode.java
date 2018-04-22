@@ -16,11 +16,15 @@ public class SimpleNode extends AbstractNode {
 
 	private SimpleNodeController controller;
 
+	private String nextNodeHost;
+	
 	private int nextNodePort;
 
-	public SimpleNode(int port, NodeIdentifier name, int nextNodePort) {
-		super(port, name);
 
+	public SimpleNode(int port, NodeIdentifier name, String nextNodeHost, int nextNodePort) {
+		super(port, name);
+		
+		this.nextNodeHost = nextNodeHost;
 		this.nextNodePort = nextNodePort;
 	}
 
@@ -69,7 +73,7 @@ public class SimpleNode extends AbstractNode {
 	@Override
 	protected void onSoapMessageReadyToSend(SOAPMessage soapMessage) {
 		try {
-			forwardToPort(soapMessage, nextNodePort);
+			forwardTo(soapMessage, nextNodeHost, nextNodePort);
 		} catch (IOException | SOAPException e) {
 			controller.showError("Error", e.getMessage());
 		}
@@ -82,6 +86,10 @@ public class SimpleNode extends AbstractNode {
 
 	public void setController(SimpleNodeController controller) {
 		this.controller = controller;
+	}
+
+	public String getNetNodeHost() {
+		return nextNodeHost;
 	}
 
 }

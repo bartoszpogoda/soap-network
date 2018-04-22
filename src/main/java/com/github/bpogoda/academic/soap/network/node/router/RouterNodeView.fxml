@@ -48,7 +48,7 @@
    <top>
       <AnchorPane prefHeight="103.0" prefWidth="414.0" style="-fx-background-color: #D9E9D9;" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="lblNextNetworkNodePort" alignment="CENTER" layoutX="323.0" layoutY="15.0" prefHeight="29.0" prefWidth="77.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 5;" textFill="WHITE">
+            <Label fx:id="lblNextNetworkNodePort" alignment="CENTER" layoutX="342.0" layoutY="15.0" prefHeight="29.0" prefWidth="58.0" style="-fx-background-color: #5cb85c; -fx-background-radius: 5;" textFill="WHITE">
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
@@ -56,8 +56,8 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Text layoutX="221.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="forwarding to" wrappingWidth="108.24951171875" />
-            <Label fx:id="lblCurrentNodePort" alignment="CENTER" layoutX="130.0" layoutY="14.0" prefHeight="29.0" prefWidth="77.0" style="-fx-background-color: #7ba51c; -fx-background-radius: 5;" textFill="WHITE">
+            <Text layoutX="153.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="forwarding to" wrappingWidth="108.24951171875" />
+            <Label fx:id="lblCurrentNodePort" alignment="CENTER" layoutX="68.0" layoutY="14.0" prefHeight="29.0" prefWidth="77.0" style="-fx-background-color: #7ba51c; -fx-background-radius: 5;" textFill="WHITE">
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
@@ -65,7 +65,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Label fx:id="lblCurrentNodeId" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="29.0" prefWidth="128.0" style="-fx-background-color: #5da31c; -fx-background-radius: 5;" textFill="WHITE">
+            <Label fx:id="lblCurrentNodeId" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="29.0" prefWidth="65.0" style="-fx-background-color: #5da31c; -fx-background-radius: 5;" textFill="WHITE">
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
@@ -73,8 +73,24 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Label>
-            <Text layoutX="236.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="routing to" wrappingWidth="78.24951171875" />
-            <Label fx:id="lblNextRouterNodePort" alignment="CENTER" layoutX="323.0" layoutY="56.0" prefHeight="29.0" prefWidth="77.0" style="-fx-background-color: #6fb11f; -fx-background-radius: 5;" textFill="WHITE">
+            <Text layoutX="160.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="routing to" wrappingWidth="78.24951171875" />
+            <Label fx:id="lblNextRouterNodePort" alignment="CENTER" layoutX="345.0" layoutY="56.0" prefHeight="29.0" prefWidth="55.0" style="-fx-background-color: #6fb11f; -fx-background-radius: 5;" textFill="WHITE">
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblNextNetworkNodeHost" alignment="CENTER" layoutX="261.0" layoutY="15.0" prefHeight="29.0" prefWidth="89.0" style="-fx-background-color: #5aa85c; -fx-background-radius: 5;" textFill="WHITE">
+               <opaqueInsets>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </opaqueInsets>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblNextRouterNodeHost" alignment="CENTER" layoutX="261.0" layoutY="56.0" prefHeight="29.0" prefWidth="89.0" style="-fx-background-color: #5aa85c; -fx-background-radius: 5;" textFill="WHITE">
                <opaqueInsets>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
