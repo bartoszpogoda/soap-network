@@ -29,16 +29,16 @@ public class RouterNode extends AbstractNode {
 	@Override
 	protected void onSoapMessageReceived(SOAPMessage soapMessage) {
 		controller.log(LogsUtil.LOG_RECEIVE);
-		
+
 		try {
 			NodeIdentifier receiver = SoapUtil.extractReceiver(soapMessage);
-			
+
 			// determine if message was already handled
-			if(SoapUtil.extractPathNodes(soapMessage).contains(this.getNodeId())) {
+			if (SoapUtil.extractPathNodes(soapMessage).contains(this.getNodeId())) {
 				controller.log(LogsUtil.LOG_DROP);
 				return;
 			}
-			
+
 			// determine if message is addressed to current node
 			if (receiver.isReceiver(this.getNodeId())) {
 				controller.log(LogsUtil.LOG_TO_ME);
@@ -79,6 +79,12 @@ public class RouterNode extends AbstractNode {
 			} else if (receiver.isNetworkBroadcast()) {
 				controller.log(LogsUtil.LOG_FORWARD_ROUTER);
 				forwardToPort(soapMessage, nextRouterNodePort);
+			} else if (receiver.isUnicast() && receiver.getNetworkName().equals(getNodeId().getNetworkName())) {
+				controller.log(LogsUtil.LOG_FORWARD_NETWORK);
+				forwardToPort(soapMessage, nextNetworkNodePort);
+			} else if (receiver.isUnicast() && !receiver.getNetworkName().equals(getNodeId().getNetworkName())) {
+				controller.log(LogsUtil.LOG_FORWARD_ROUTER);
+				forwardToPort(soapMessage, nextRouterNodePort);
 			} else {
 				controller.log(LogsUtil.LOG_FORWARD_NETWORK);
 				forwardToPort(soapMessage, nextNetworkNodePort);
@@ -86,7 +92,9 @@ public class RouterNode extends AbstractNode {
 				forwardToPort(soapMessage, nextRouterNodePort);
 			}
 
-		} catch (IOException | SOAPException e) {
+		} catch (IOException |
+
+				SOAPException e) {
 			controller.showError("Error", e.getMessage());
 		}
 	}
