@@ -51,7 +51,7 @@ Router node is node connected to its group and also to another router node. Rout
 
 ##### 3networks-3nodes
 
-![3network-3nodes-schema](demo\3network-3nodes-schema.jpg)
+![3network-3nodes-schema](/demo/3network-3nodes-schema.jpg?raw=true)
 
 ```shell
 start javaw -jar router-node.jar --nodePort=5060 --nodeId="a-R" --nextNetworkNodePort=5061 --nextRouterNodePort=5070
@@ -80,4 +80,4 @@ start javaw -jar router-node.jar --nodePort=5080 --nodeId="c-R" --nextNetworkNod
 
 #### GUI screenshots
 
-![ss4-unicast](demo\ss4-unicast.PNG)
+![ss4-unicast](/demo/ss4-unicast.PNG?raw=true)
