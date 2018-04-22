@@ -16,7 +16,7 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <TextArea fx:id="tbMessage" layoutX="18.0" layoutY="51.0" prefHeight="137.0" prefWidth="265.0" promptText="Enter message...." AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="51.0" />
-            <Button fx:id="btnSendMessage" layoutX="18.0" layoutY="198.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="31.0" prefWidth="264.0" text="Button" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" />
+            <Button fx:id="btnSendMessage" layoutX="18.0" layoutY="198.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="31.0" prefWidth="264.0" text="Send" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" />
             <TextField fx:id="tfTargetNode" layoutX="110.0" layoutY="14.0" prefHeight="31.0" prefWidth="172.0" promptText="Receiver" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="14.0" />
             <Text layoutX="18.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Target node" AnchorPane.leftAnchor="18.0" AnchorPane.topAnchor="19.0" />
          </children>

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javax.swing.text.ChangedCharSetException;
 import javax.xml.soap.SOAPException;
 
 import com.github.bpogoda.academic.soap.network.model.node.AbstractNode;
@@ -12,6 +13,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -67,6 +69,14 @@ public class AbstractNodeController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		listViewLog.setItems(logs);
+		
+		logs.addListener(new ListChangeListener<String>() {
+
+			@Override
+			public void onChanged(Change<? extends String> c) {
+				listViewLog.scrollTo(listViewLog.getItems().size() - 1);
+			}
+		});
 	}
 
 	public void setNode(AbstractNode node) {

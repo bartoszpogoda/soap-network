@@ -92,9 +92,7 @@ public class RouterNode extends AbstractNode {
 				forwardToPort(soapMessage, nextRouterNodePort);
 			}
 
-		} catch (IOException |
-
-				SOAPException e) {
+		} catch (IOException | SOAPException e) {
 			controller.showError("Error", e.getMessage());
 		}
 	}
